@@ -67,7 +67,13 @@ export default async function Home() {
 
   if(user) {
     //購入履歴を検索するAPIにリクエストを送る
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/purchases/${user.id}`,
+      {
+        body: JSON.stringify({
+          userId: user?.id
+        })
+      }
+    );
 
     //返ってきたデータをjson形式に変換
     const purchasesData = await response.json();
