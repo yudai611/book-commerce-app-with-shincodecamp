@@ -1,11 +1,10 @@
 import prisma from "@/app/lib/prisma";
-import { Purchase } from "@/app/types/types";
 import { NextResponse } from "next/server";
 import { NextApiRequest } from 'next';
 // {params}: {params: { userId: string}}
 //購入履歴検索API
-export async function GET(request: NextApiRequest, response: Response ) {
-    const { userId } = request.query;
+export async function GET(request: NextApiRequest) {//NextApiRequestはリクエストのデータやパラメータ、ヘッダー、クエリなどにアクセスできる
+    const { userId } = request.query;//NextApiRequestに含まれているqueryメソッドを使用し、クエリパラメータにアクセスし、userIdを取得する
 
     try {
         const purchases = await prisma.purchase.findMany({
