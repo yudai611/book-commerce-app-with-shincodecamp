@@ -2,8 +2,11 @@ import { getDetailBook } from "@/app/lib/microcms/client";
 import Image from "next/image";
 import React from "react";
 
-const DetailBook = async ({params}: { params: { id: string }}) => {//paramsでパスを取得し、その中のidを取得する
-    const book = await getDetailBook(params.id);//bookIdを引数に設定し、関数を実行する(指定したいbookIdと一致する記事を取得する関数)
+
+const DetailBook = async ({params}: { params: Promise<{ id: string }>}) => {//paramsでパスを取得し、その中のidを取得する
+
+  const paramsId = (await params).id;
+    const book = await getDetailBook(paramsId);//bookIdを引数に設定し、関数を実行する(指定したいbookIdと一致する記事を取得する関数)
 
   return (
     <div className="container mx-auto p-4">
