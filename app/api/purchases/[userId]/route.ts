@@ -14,7 +14,7 @@ export async function GET(request: Request, {params}: {params: { userId: string}
         console.log(purchases);
         // 取得した購入データを JSON 形式で返す
         return NextResponse.json(purchases);
-    } catch(err) {
+    } catch {
         // エラーが発生した場合、そのエラーメッセージを JSON 形式で返す
         return NextResponse.json({message: 'データの取得に失敗しました'});
     }

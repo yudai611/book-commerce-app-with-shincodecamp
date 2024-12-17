@@ -6,7 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 //requestオブジェクトは、クライアントからサーバーに送信されたHTTPリクエストの情報を保持する
 //responseオブジェクトは、サーバーがクライアントに返すレスポンスの情報を保持する。
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
     
     // リクエストからtitle、price、bookId、userIdを取得
     const { title, price, bookId, userId } = await request.json();
@@ -49,7 +49,7 @@ export async function POST(request: Request, response: Response) {
         */}
         return NextResponse.json({ checkout_url: session.url });
 
-    } catch(err: any) {
-        return NextResponse.json({ message: err.message });//エラーメッセージを返す
+    } catch(err) {
+        return NextResponse.json(err);//エラーメッセージを返す
     }
 }

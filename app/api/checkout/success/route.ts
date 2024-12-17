@@ -5,7 +5,7 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 //購入履歴の保存
-export async function POST(request: Request, response: Response) {
+export async function POST(request: Request) {
 
     const {sessionId} = await request.json();//リクエスト時にわたってきたsessionIdを格納する
 
@@ -17,7 +17,7 @@ export async function POST(request: Request, response: Response) {
         const existingPurchase = await prisma.purchase.findFirst({
             where: {
                 userId: session.client_reference_id!,
-                bookId: session.metadata?.bookId!,
+                bookId: session.metadata?.bookId,
             }
         });
 
@@ -27,7 +27,7 @@ export async function POST(request: Request, response: Response) {
             const purchase = await prisma.purchase.create({
                 data: {
                     userId: session.client_reference_id!,//購入したユーザーのid
-                    bookId: session.metadata?.bookId!,//購入された本のid
+                    bookId: session.metadata?.bookId ?? "Unknown",//購入された本のid
                 }
             });
 
@@ -35,7 +35,7 @@ export async function POST(request: Request, response: Response) {
         }else {
             return NextResponse.json({ message: "すでに購入済みです。"});
         }
-    } catch (err: any) {
-        return NextResponse.json({ message: err.message});
+    } catch (err) {
+        return NextResponse.json(err);
     }
 }
