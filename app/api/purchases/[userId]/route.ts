@@ -2,12 +2,13 @@ import prisma from "@/app/lib/prisma";
 import { NextResponse } from "next/server";
 // {params}: {params: { userId: string}}
 //購入履歴検索API
-export async function GET(request: Request, { params }: { params: { userId: string }}) {//パラメーターのuserIdを取得する
+export async function GET(request: Request, { params }: { params: Promise<{ userId: string }>}) {//パラメーターのuserIdを取得する
 
+    const userId = (await params).userId
     try {
         const purchases = await prisma.purchase.findMany({
             where: {
-                userId: params.userId// userId を条件に購入データを検索
+                userId: userId// userId を条件に購入データを検索
             },
         });
 
